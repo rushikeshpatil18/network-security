@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>CRYPT0_KIT — Classical Cryptography Toolkit</title>
+<meta name="description" content="Encrypt and decrypt with 8 classical ciphers. Runs 100% in your browser."/>
+<style>
+:root{--bg:#040705;--panel:#080F0A;--panel2:#0C160E;--grn:#00FF41;--dim:#1E6B32;--txt:#C9FFD6;--mut:#5F8F6A;--amb:#FFB000;--red:#FF3131}
+[data-theme="light"]{--bg:#F4F7F5;--panel:#FFFFFF;--panel2:#E9F2EC;--grn:#047857;--dim:#C4DCCF;--txt:#14261C;--mut:#64816F;--amb:#92400E}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Courier New',Consolas,monospace;background:var(--bg);color:var(--txt);display:flex;min-height:100vh;text-shadow:0 0 6px rgba(0,255,65,.35)}
+[data-theme="light"] body,body.light,html[data-theme="light"] body{text-shadow:none}
+html[data-theme="dark"] body::after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.25) 0 1px,transparent 1px 3px);z-index:99}
+aside{width:260px;background:var(--panel);border-right:1px solid var(--dim);padding:22px 0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;z-index:1}
+html[data-theme="light"] aside{background:#fff;border-right:1px solid #D9E5DD}
+.brand{padding:0 20px 14px}.brand h1{font-size:17px;letter-spacing:1px;color:var(--grn)}.brand h1 .cur{animation:blink 1s steps(1) infinite}.brand p{color:var(--mut);font-size:12px;margin-top:6px;line-height:1.6}
+@keyframes blink{50%{opacity:0}}
+.div{height:1px;background:var(--dim);margin:12px 20px}
+.navlabel{font-size:10px;color:var(--mut);padding:0 20px 8px;letter-spacing:2px;font-weight:700}
+.navbtn{display:block;width:100%;text-align:left;background:transparent;border:0;border-left:3px solid transparent;color:var(--txt);font-family:inherit;font-size:14px;padding:11px 20px;cursor:pointer}
+.navbtn:hover{background:var(--panel2)}.navbtn.active{background:var(--panel2);border-left-color:var(--grn);color:var(--grn);font-weight:700}
+aside select{margin:0 20px;padding:8px;width:calc(100% - 40px);background:var(--bg);border:1px solid var(--dim);color:var(--grn);font-family:inherit}
+.foot{margin-top:auto;padding:14px 20px;color:var(--mut);font-size:11px;line-height:1.7}
+.foot .on{color:var(--grn)}
+main{flex:1;min-width:0;z-index:1}
+.top{background:var(--panel);border-bottom:1px solid var(--dim);padding:14px 26px;display:flex;align-items:center;gap:12px}
+.top h2{font-size:16px;color:var(--grn)}.top small{color:var(--mut);display:block;font-size:12px;margin-top:3px}
+.badge{margin-left:auto;background:var(--bg);border:1px solid var(--grn);color:var(--grn);font-size:11px;font-weight:700;padding:6px 12px;border-radius:3px;white-space:nowrap}
+.status{padding:10px 26px 0;color:var(--grn);font-size:12px}
+section{padding:14px 26px 30px;display:none}section.active{display:block}
+.card{background:var(--panel);border:1px solid var(--dim);border-radius:4px;padding:18px;margin-bottom:14px}
+.card h3{font-size:14px;margin-bottom:4px;color:var(--grn)}.card h3::before{content:"> ";color:var(--dim)}.card .sub{color:var(--mut);font-size:12px;margin-bottom:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:900px){.grid2{grid-template-columns:1fr}aside{display:none}}
+label.lbl{font-size:11px;font-weight:700;color:var(--mut);display:block;margin:10px 0 6px;letter-spacing:1px}
+select,input[type=text]{width:100%;padding:10px 12px;border:1px solid var(--dim);border-radius:3px;background:var(--bg);color:var(--grn);font-size:14px;font-family:inherit}
+select:focus,input[type=text]:focus,textarea:focus{outline:none;border-color:var(--grn)}
+textarea{width:100%;border:1px solid var(--dim);border-radius:3px;background:var(--bg);color:var(--txt);padding:12px;font-family:inherit;font-size:14px;min-height:130px;resize:vertical}
+textarea.dark{border-color:var(--grn);color:var(--grn)}
+html[data-theme="light"] textarea.dark{background:#0B1F14;color:#4DFF9A;border-color:#0B1F14}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+button.btn{border-radius:3px;padding:11px 18px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}
+.btn-p{background:var(--grn);color:#000;border:1px solid var(--grn)}
+.btn-d{background:var(--bg);color:var(--amb);border:1px solid var(--amb)}
+.btn-g{background:var(--bg);color:var(--grn);border:1px solid var(--dim)}
+#themeBtn{padding:6px 12px;font-size:12px;white-space:nowrap}
+.pill{background:var(--bg);border:1px dashed var(--dim);border-radius:3px;padding:10px 12px;font-size:12px;margin-top:12px;word-break:break-word}
+table{width:100%;border-collapse:collapse;font-size:13px;background:var(--bg)}
+th{background:var(--panel2);color:var(--grn);text-align:left;padding:10px;border-bottom:1px solid var(--grn)}td{padding:9px 10px;border-top:1px solid var(--panel2)}
+.err{background:var(--bg);border:1px solid var(--red);color:var(--red);border-radius:3px;padding:10px 12px;font-size:13px;margin-top:12px;display:none}
+.helpgrid{display:grid;grid-template-columns:240px 1fr;gap:14px}@media(max-width:900px){.helpgrid{grid-template-columns:1fr}}
+.helpbtn{display:block;width:100%;text-align:left;background:var(--bg);border:1px solid var(--dim);color:var(--txt);border-radius:3px;padding:9px 10px;margin-bottom:6px;cursor:pointer;font-size:13px;font-family:inherit}
+.helpbtn.active{background:var(--panel2);color:var(--grn);border-color:var(--grn)}
+pre{white-space:pre-wrap;font-size:13px;line-height:1.6}
+footer.site{padding:0 26px 26px;color:var(--mut);font-size:11px}
+</style>
+</head>
+<body>
+<aside>
+  <div class="brand"><h1>CRYPT0_KIT<span class="cur">_</span></h1><p>// classical cipher terminal<br/>// NS mini-project v1.0<br/>// 100% client-side</p></div>
+  <div class="div"></div><div class="navlabel">[+] MODULES</div>
+  <button class="navbtn active" data-p="dashboard">[1] cipher.exe</button>
+  <button class="navbtn" data-p="compare">[2] benchmark.exe</button>
+  <button class="navbtn" data-p="help">[3] manual.txt</button>
+  <div class="div"></div><div class="navlabel">[+] PAYLOAD</div>
+  <select id="sideCipher" aria-label="Cipher shortcut"></select>
+  <div class="foot">8 ciphers loaded<br/>runs offline in browser<br/>status: <span class="on">ONLINE</span></div>
+</aside>
+<main>
+  <div class="top"><div><h2 id="pageTitle">root@crypter:~$ cipher.exe</h2><small id="pageSub">encrypt // decrypt // live key visuals</small></div><span class="badge" id="badge">SHIFT</span><button class="btn btn-g" id="themeBtn" title="Toggle dark / light theme">light mode</button></div>
+  <div class="status" id="status">[+] uplink established — select cipher module.</div>
+
+  <section id="dashboard" class="active">
+    <div class="card"><h3>cipher configuration</h3><div class="sub">choose algorithm + key. [gen_key] works for monoalphabetic + otp.</div>
+      <div class="grid2">
+        <div><label class="lbl">SELECT CIPHER</label><select id="cipher"></select></div>
+        <div><label class="lbl" id="keyHint">KEY</label><div style="display:flex;gap:8px"><input type="text" id="key" value="5"/><button class="btn btn-g" id="genBtn" disabled>gen_key</button></div></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h3>stdin — plaintext</h3><textarea id="inp">NETWORK SECURITY</textarea></div>
+      <div class="card"><h3>stdout — result</h3><textarea id="out" class="dark" readonly placeholder="awaiting output…"></textarea></div>
+    </div>
+    <div class="card">
+      <div class="row"><button class="btn btn-p" id="encBtn">[run] encrypt</button><button class="btn btn-d" id="decBtn">[run] decrypt</button><button class="btn btn-g" id="swapBtn" title="Move output back to input for round-trip">out-&gt;in</button><button class="btn btn-g" id="clrBtn">clear</button><button class="btn btn-g" id="copyBtn">copy</button></div>
+      <div class="pill" id="matrix">Key visual will appear here for Playfair / Hill</div><div class="err" id="err"></div>
+    </div>
+  </section>
+
+  <section id="compare">
+    <div class="card"><h3>benchmark input</h3><textarea id="benchIn">THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 12345</textarea>
+      <div class="row"><button class="btn btn-p" id="benchBtn">[run] benchmark all</button></div>
+    </div>
+    <div class="card"><table><thead><tr><th>Algorithm</th><th>Type</th><th>Enc (ms)</th><th>Dec (ms)</th><th>Status</th><th>Sample</th></tr></thead><tbody id="benchBody"><tr><td colspan="6">press run…</td></tr></tbody></table>
+      <div class="pill">Speed != security — fast Caesar is trivially breakable; OTP is theoretically unbreakable.</div>
+    </div>
+  </section>
+
+  <section id="help">
+    <div class="helpgrid">
+      <div class="card"><h3>topics</h3><div id="helpList"></div></div>
+      <div class="card"><h3 id="helpTitle">manual</h3><pre id="helpBody"></pre></div>
+    </div>
+  </section>
+
+  <footer class="site">CRYPT0_KIT // classical ciphers are for coursework only — use AES/RSA for real secrets.</footer>
+</main>
+<script src="ciphers.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

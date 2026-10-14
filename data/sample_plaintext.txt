@@ -1,0 +1,16 @@
+CLASSICAL CRYPTOGRAPHY TOOLKIT - SAMPLE TEXT FILE
+Course: Network Security
+Project: Design and Development of a Classical Cryptography Toolkit
+
+This is a demonstration text file for file encryption and decryption testing.
+Classical ciphers implemented:
+1. Caesar Cipher (Monoalphabetic Shift)
+2. Monoalphabetic Substitution Cipher
+3. Playfair Cipher (5x5 Matrix)
+4. Hill Cipher (2x2 Modulo Matrix)
+5. Vigenere Polyalphabetic Cipher
+6. One-Time Pad (Information Theoretical Security)
+7. Rail Fence Transposition Cipher
+8. Columnar Transposition Cipher
+
+Plaintext verification: The quick brown fox jumps over the lazy dog.
